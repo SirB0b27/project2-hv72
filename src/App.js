@@ -11,37 +11,44 @@ function App() {
   const usernameRef = useRef('');
   const [name, changeName] = useState('');
   const [list, changeList] = useState([]);
-  const [playerType, changeType] = useState({'X': '', 'O': '', 'Spectator': []});
   
   function login()
   {
     if(usernameRef != '')
     {
       const username = usernameRef.current.value;
-      console.log(username);
+      // console.log(username);
       changeName(username);
-      changeList(prevList => [...prevList, username]);
-      socket.emit('login', {userList: list});
+      const tempList = [...list];
+      tempList.push(username);
+      changeList(tempList);
       
-      //add player types
-      const newDict = {...playerType};
+      socket.emit('login_info', {userList: tempList});
       
-      // document.getElementById("login").style.visibility = "hidden";
-      document.getElementById("boardy").style.visibility = "visible";
+      // document.getElementById("login").style.display = "none";
+      document.getElementById("boardy").style.display = "inline";
     }
   }
   
+  useEffect( () => {
+    socket.on("login_info", (data) => {
+      console.log("login event recieved");
+      console.log(data['userList']);
+      changeList(prevList => data['userList']);
+    })
+  }, []);
+  
   return (
     <div class="overarching">
-      <div id="login" style={{visibility:"visible"}}>
+      <div id="login" style={{display:"inline"}}>
         <h3>Welcome to Tic-Tac-Toe</h3>
         <input type="text" ref={usernameRef} placeholder="Enter Username"/>
         <br/>
         <button type="button" onClick={() => login()}>Log me in bitch</button>
       </div>
       <br/>
-      <div class="boardy" id="boardy" style={{visibility:"hidden"}}>
-        <Board />
+      <div class="boardy" id="boardy" style={{display:"none"}}>
+        <Board user_list={list} name={name}/>
       </div>
     </div>
   );
