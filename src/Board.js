@@ -16,32 +16,44 @@ export function Board(props)
     function onClickDiv(index){
         const newList = [...myList];
         var countNonNull = 0;
-        newList.map(val => val == null ? '' : countNonNull++)
+        for(var i = 0; i <= 8; i++)
+        {
+            if(myList[i] == '')
+            {
+                continue;
+            }
+            else{
+                countNonNull++;
+            }
+        }
+        // newList.map(val => val == null ? '' : countNonNull++)
         console.log("non nulls: " + countNonNull);
-        if(newList[index] == null)
+        
+        if(newList[index] == '')
         {
             if(isx[0] == 0 && playerX == props.name && countNonNull%2 == 0)
             {
                 newList[index] = "X";
-                changex(prevList => [1])
+                changex([1])
                 socket.emit("tiktaktoe", {arr: newList, xory: [1]});
+                changeList(prevList => [...newList]);
+                console.log(newList);
+                // return;
             }
             else if(isx[0] == 1 && playerO == props.name && countNonNull%2 == 1)
             {
                 newList[index] = "O";
-                changex(prevList => [0])
+                changex([0])
                 socket.emit("tiktaktoe", {arr: newList, xory: [0]});
-                return;
+                changeList(prevList => [...newList]);
+                console.log(newList);
+                // return;
             }
         }
         else
         {
             console.log("X already exists");
         }
-        
-        newList[index] = "X";
-        changeList(prevList => [...newList]);
-        console.log(newList);
     }
     
     useEffect( () => {
