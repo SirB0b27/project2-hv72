@@ -52,8 +52,30 @@ export function Board(props)
         }
         else
         {
-            console.log("X already exists");
+            console.log("Can't Click Here");
         }
+        
+        if(countNonNull == 8)
+        {
+            document.getElementById("resetButton").style.display = "inline";
+        }
+    }
+    
+    function wincon()
+    {
+        //
+    }
+    
+    function restart()
+    {
+        if(playerX == props.name || playerO == props.name)
+        {
+            const newList = ['', '', '', '', '', '', '', '',''];
+            changex([0])
+            socket.emit("tiktaktoe", {arr: newList, xory: [0]});
+            changeList(prevList => [...newList]);
+        }
+        document.getElementById("resetButton").style.display = "none";
     }
     
     useEffect( () => {
@@ -92,6 +114,8 @@ export function Board(props)
                 <Box func={() => {onClickDiv(7)}} val={myList[7]}/>
                 <Box func={() => {onClickDiv(8)}} val={myList[8]}/>
             </div>
+            <br />
+            <button type="button" id="resetButton" style={{display:"none"}} onClick={() => restart()}>Restart me bitch</button>
         </div>
     )
 }
