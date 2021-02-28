@@ -52,11 +52,6 @@ export function Board(props)
         {
             console.log("Can't Click Here");
         }
-        
-        if(countNonNull == 8 || wincon())
-        {
-            document.getElementById("resetButton").style.display = "inline";
-        }
     }
     
     // got this from https://reactjs.org/tutorial/tutorial.html
@@ -131,7 +126,7 @@ export function Board(props)
             </div>
             <br />
             <h1>{ wincon() ? wincon() + " has won the game" : ''}</h1>
-            <button type="button" id="resetButton" style={{display:"none"}} onClick={() => restart()}>Restart me bitch</button>
+            <h1>{ wincon() ? <button type="button" onClick={() => restart()}>Restart me bitch</button> : ''}</h1>
         </div>
     )
 }
