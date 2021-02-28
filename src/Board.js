@@ -9,7 +9,6 @@ export function Board(props)
 {
     const [myList, changeList] = useState(['', '', '', '', '', '', '', '', '']);
     const [isx, changex] = useState([0]);
-    // const [] = useState([props.username])
     const playerX = props.user_list[0];
     const playerO = props.user_list[1];
     
@@ -26,12 +25,11 @@ export function Board(props)
                 countNonNull++;
             }
         }
-        // newList.map(val => val == null ? '' : countNonNull++)
         console.log("non nulls: " + countNonNull);
         
         if(newList[index] == '')
         {
-            if(isx[0] == 0 && playerX == props.name && countNonNull%2 == 0)
+            if(isx[0] == 0 && playerX == props.name && countNonNull%2 == 0 && !wincon())
             {
                 newList[index] = "X";
                 changex([1])
@@ -40,7 +38,7 @@ export function Board(props)
                 console.log(newList);
                 // return;
             }
-            else if(isx[0] == 1 && playerO == props.name && countNonNull%2 == 1)
+            else if(isx[0] == 1 && playerO == props.name && countNonNull%2 == 1 && !wincon())
             {
                 newList[index] = "O";
                 changex([0])
@@ -55,15 +53,32 @@ export function Board(props)
             console.log("Can't Click Here");
         }
         
-        if(countNonNull == 8)
+        if(countNonNull == 8 || wincon())
         {
             document.getElementById("resetButton").style.display = "inline";
         }
     }
     
+    // got this from https://reactjs.org/tutorial/tutorial.html
     function wincon()
     {
-        //
+        const lines = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6],
+        ];
+        for (let i = 0; i < lines.length; i++) {
+            const [a, b, c] = lines[i];
+            if (myList[a] && myList[a] === myList[b] && myList[a] === myList[c]) {
+              return myList[a];
+            }
+        }
+        return null;
     }
     
     function restart()
@@ -115,6 +130,7 @@ export function Board(props)
                 <Box func={() => {onClickDiv(8)}} val={myList[8]}/>
             </div>
             <br />
+            <h1>{ wincon() ? wincon() + " has won the game" : ''}</h1>
             <button type="button" id="resetButton" style={{display:"none"}} onClick={() => restart()}>Restart me bitch</button>
         </div>
     )
