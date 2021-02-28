@@ -57,6 +57,21 @@ export function Board(props)
     // got this from https://reactjs.org/tutorial/tutorial.html
     function wincon()
     {
+        var countNonNull = 0;
+        for(var i = 0; i <= 8; i++)
+        {
+            if(myList[i] == '')
+            {
+                continue;
+            }
+            else{
+                countNonNull++;
+            }
+        }
+        if(countNonNull == 9)
+        {
+            return "No winner";
+        }
         const lines = [
             [0, 1, 2],
             [3, 4, 5],
@@ -70,7 +85,7 @@ export function Board(props)
         for (let i = 0; i < lines.length; i++) {
             const [a, b, c] = lines[i];
             if (myList[a] && myList[a] === myList[b] && myList[a] === myList[c]) {
-              return myList[a];
+              return myList[a] + " has won the game";
             }
         }
         return null;
@@ -85,7 +100,6 @@ export function Board(props)
             socket.emit("tiktaktoe", {arr: newList, xory: [0]});
             changeList(prevList => [...newList]);
         }
-        document.getElementById("resetButton").style.display = "none";
     }
     
     useEffect( () => {
@@ -125,7 +139,7 @@ export function Board(props)
                 <Box func={() => {onClickDiv(8)}} val={myList[8]}/>
             </div>
             <br />
-            <h1>{ wincon() ? wincon() + " has won the game" : ''}</h1>
+            <h1>{ wincon() ? wincon() : ''}</h1>
             <h1>{ wincon() ? <button type="button" onClick={() => restart()}>Restart me bitch</button> : ''}</h1>
         </div>
     )
