@@ -1,4 +1,5 @@
 # Flask and create-react-app
+### by Hemanth Velan
 
 ## Requirements
 1. `pip install python-dotenv`
@@ -27,3 +28,7 @@
 
 ## Heroku Deployed Website:
 https://murmuring-stream-85764.herokuapp.com/
+
+## Known Problem(s) / Future Ideas
+
+## Technical Issues and How I Solved Them
