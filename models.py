@@ -6,5 +6,5 @@ class Person(db.Model):
     
     
     def __repr__(self):
-        return '<person %r>' % self.username
+        return '<Person %r>' % self.username
         
