@@ -52,11 +52,11 @@ function App() {
       changeList(prevList => data['userList']);
     })
     
-    socket.on("leaderboard", (data) =>{
-      console.log("leaderboard info recieved");
-      console.log(data);
-      changeBoard(prevBoard => data)
-    })
+    // socket.on("leaderboard", (data) =>{
+    //   console.log("leaderboard info recieved");
+    //   console.log(data);
+    //   changeBoard(prevBoard => data)
+    // })
   }, []);
   
   return (

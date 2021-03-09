@@ -13,8 +13,6 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 import models
 db.create_all()
-# everything = models.Person.query.all()
-# print(everything)
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -34,6 +32,12 @@ def index(filename):
 @socketio.on('connect')
 def on_connect():
     print('User connected!')
+    everything = models.Person.query.all()
+    tempDict = {}
+    for person in everything:
+        print(str(person.userName) + "\tScore: " + str(person.userScore))
+        tempDict[person.userName] = person.userScore
+    print(everything)
 
 # When a client disconnects from this Socket connection, this function is run
 @socketio.on('disconnect')
@@ -53,7 +57,6 @@ def on_loginInfo(data):
 @socketio.on("leaderboard")
 def on_leaderboard(data):
     print(data)
-    
     socketio.emit("leaderboard", data, broadcast=True, include_self=False)
     
 
@@ -66,9 +69,11 @@ def on_chat(data): # data is whatever arg you pass in your emit call on client
     # the client that emmitted the event that triggered this function
     socketio.emit('chat',  data, broadcast=True, include_self=False)
 
+
+if __name__ == "__main__":
 # Note that we don't call app.run anymore. We call socketio.run with app arg
-socketio.run(
-    app,
-    host=os.getenv('IP', '0.0.0.0'),
-    port=8081 if os.getenv('C9_PORT') else int(os.getenv('PORT', 8081)),
-)
+    socketio.run(
+        app,
+        host=os.getenv('IP', '0.0.0.0'),
+        port=8081 if os.getenv('C9_PORT') else int(os.getenv('PORT', 8081)),
+    )
