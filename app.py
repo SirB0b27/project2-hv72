@@ -35,9 +35,10 @@ def on_connect():
     everything = models.Person.query.all()
     tempDict = {}
     for person in everything:
-        print(str(person.userName) + "\tScore: " + str(person.userScore))
+        # print(str(person.userName) + "\tScore: " + str(person.userScore))
         tempDict[person.userName] = person.userScore
-    print(everything)
+    print(tempDict)
+    socketio.emit("leaderboard", tempDict, broadcast=True, include_self=False)
 
 # When a client disconnects from this Socket connection, this function is run
 @socketio.on('disconnect')
@@ -56,7 +57,15 @@ def on_loginInfo(data):
     
 @socketio.on("leaderboard")
 def on_leaderboard(data):
-    print(data)
+    print(data["board"])
+    
+    # update db here
+    for person in data["board"]:
+        print(str(person) + "\t" + str(data["board"][person]))
+        # persons = models.Person(userName=person, userScore=data["board"][person])
+        # db.session.add(persons)
+        # db.session.commit()
+    
     socketio.emit("leaderboard", data, broadcast=True, include_self=False)
     
 

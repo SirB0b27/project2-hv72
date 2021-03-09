@@ -11,8 +11,8 @@ function App() {
   const usernameRef = useRef('');
   const [name, changeName] = useState('');
   const [list, changeList] = useState([]);
-  const [leaderboard, changeBoard] = useState({"one": "two", "three":"four"});
-  
+  var [leaderboard, changeBoard] = useState({"users":[], "scores":[]});
+  leaderboard = leaderboard ?? {};
   function login()
   {
     if(usernameRef != '')
@@ -20,7 +20,19 @@ function App() {
       const username = usernameRef.current.value;
       // console.log(username);
       changeName(username);
+      /* for(const [name,points] of Object.entries(newBoard))
+       {
+         console.log(name);
+         console.log(points);
+       };
+      */
+      const tempList = [...list];
+      tempList.push(username);
+      changeList(tempList);
+      socket.emit('login_info', {userList: tempList});
+      
       const newBoard = {...leaderboard};
+      // console.log("newBoard" + newBoard);  
       if(!(username in newBoard))
       {
         console.log(username);
@@ -28,17 +40,6 @@ function App() {
       }
       changeBoard(newBoard);
       socket.emit('leaderboard', {board: newBoard});
-      
-      // for(const [name,points] of Object.entries(newBoard))
-      // {
-      //   console.log(name);
-      //   console.log(points);
-      // };
-      
-      const tempList = [...list];
-      tempList.push(username);
-      changeList(tempList);
-      socket.emit('login_info', {userList: tempList});
       
       // document.getElementById("login").style.display = "none";
       document.getElementById("boardy").style.display = "inline";
@@ -52,11 +53,12 @@ function App() {
       changeList(prevList => data['userList']);
     })
     
-    // socket.on("leaderboard", (data) =>{
-    //   console.log("leaderboard info recieved");
-    //   console.log(data);
-    //   changeBoard(prevBoard => data)
-    // })
+    socket.on("leaderboard", (data) =>{
+      console.log("leaderboard info recieved");
+      console.log(data["board"]);
+      changeBoard(prevList => data["board"]);
+    })
+    
   }, []);
   
   return (
@@ -69,10 +71,10 @@ function App() {
       </div>
       <br/>
       <div class="boardy" id="boardy" style={{display:"none"}}>
-        <Board user_list={list} name={name}/>
+        <Board user_list={list} name={name} lead={leaderboard}/>
       </div>
       <div>
-      {Object.keys(leaderboard).map(key => <h2>{key}&emsp;{leaderboard[key]}</h2>)}
+      {Object.keys(leaderboard).map(key => <h2 key={key}>{key}&emsp;{leaderboard[key]}</h2>)}
       </div>
     </div>
   );
