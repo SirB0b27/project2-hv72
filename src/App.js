@@ -21,10 +21,19 @@ function App() {
       // console.log(username);
       changeName(username);
       const newBoard = {...leaderboard};
-      for(const name of newBoard.entries())
+      if(!(username in newBoard))
       {
-        console.log(name);
-      };
+        console.log(username);
+        newBoard[username] = 100;
+      }
+      changeBoard(newBoard);
+      socket.emit('leaderboard', {board: newBoard});
+      
+      // for(const [name,points] of Object.entries(newBoard))
+      // {
+      //   console.log(name);
+      //   console.log(points);
+      // };
       
       const tempList = [...list];
       tempList.push(username);
@@ -42,6 +51,12 @@ function App() {
       console.log(data['userList']);
       changeList(prevList => data['userList']);
     })
+    
+    socket.on("leaderboard", (data) =>{
+      console.log("leaderboard info recieved");
+      console.log(data);
+      changeBoard(prevBoard => data)
+    })
   }, []);
   
   return (
@@ -55,6 +70,9 @@ function App() {
       <br/>
       <div class="boardy" id="boardy" style={{display:"none"}}>
         <Board user_list={list} name={name}/>
+      </div>
+      <div>
+      {Object.keys(leaderboard).map(key => <h2>{key}&emsp;{leaderboard[key]}</h2>)}
       </div>
     </div>
   );
