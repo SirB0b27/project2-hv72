@@ -11,6 +11,7 @@ function App() {
   const usernameRef = useRef('');
   const [name, changeName] = useState('');
   const [list, changeList] = useState([]);
+  const [leaderboard, changeBoard] = useState({"one": "two", "three":"four"});
   
   function login()
   {
@@ -19,10 +20,15 @@ function App() {
       const username = usernameRef.current.value;
       // console.log(username);
       changeName(username);
+      const newBoard = {...leaderboard};
+      for(const name of newBoard.entries())
+      {
+        console.log(name);
+      };
+      
       const tempList = [...list];
       tempList.push(username);
       changeList(tempList);
-      
       socket.emit('login_info', {userList: tempList});
       
       // document.getElementById("login").style.display = "none";

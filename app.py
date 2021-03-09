@@ -46,7 +46,7 @@ def on_tictak(data):
 
 @socketio.on("login_info")
 def on_loginInfo(data):
-    print(data)
+    print(data) 
     socketio.emit("login_info", data, broadcast=True, include_self=False)
 
 # When a client emits the event 'chat' to the server, this function is run
