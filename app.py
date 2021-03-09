@@ -8,12 +8,13 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
 app = Flask(__name__, static_folder='./build/static')
-
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 import models
 db.create_all()
+# everything = models.Person.query.all()
+# print(everything)
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -48,6 +49,13 @@ def on_tictak(data):
 def on_loginInfo(data):
     print(data) 
     socketio.emit("login_info", data, broadcast=True, include_self=False)
+    
+@socketio.on("leaderboard")
+def on_leaderboard(data):
+    print(data)
+    
+    socketio.emit("leaderboard", data, broadcast=True, include_self=False)
+    
 
 # When a client emits the event 'chat' to the server, this function is run
 # 'chat' is a custom event name that we just decided
