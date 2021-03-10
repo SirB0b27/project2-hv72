@@ -33,12 +33,15 @@ def index(filename):
 def on_connect():
     print('User connected!')
     everything = models.Person.query.all()
-    tempDict = {}
+    tempUsers = []
+    tempScores = []
     for person in everything:
         # print(str(person.userName) + "\tScore: " + str(person.userScore))
-        tempDict[person.userName] = person.userScore
-    print(tempDict)
-    socketio.emit("leaderboard", tempDict, broadcast=True, include_self=False)
+        tempUsers.append(person.userName)
+        tempScores.append(person.userScore)
+    print(tempUsers)
+    print(tempScores)
+    socketio.emit("leaderboard", {"users": tempUsers, "scores": tempScores}, broadcast=True, include_self=False)
 
 # When a client disconnects from this Socket connection, this function is run
 @socketio.on('disconnect')
@@ -57,16 +60,16 @@ def on_loginInfo(data):
     
 @socketio.on("leaderboard")
 def on_leaderboard(data):
-    print(data["board"])
+    print(data)
     
     # update db here
-    for person in data["board"]:
-        print(str(person) + "\t" + str(data["board"][person]))
+    # for person in data["board"]:
+    #     print(str(person) + "\t" + str(data["board"][person]))
         # persons = models.Person(userName=person, userScore=data["board"][person])
         # db.session.add(persons)
         # db.session.commit()
     
-    socketio.emit("leaderboard", data, broadcast=True, include_self=False)
+    # socketio.emit("leaderboard", data, broadcast=True, include_self=False)
     
 
 # When a client emits the event 'chat' to the server, this function is run

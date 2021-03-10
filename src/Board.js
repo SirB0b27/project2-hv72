@@ -11,7 +11,7 @@ export function Board(props)
     const [isx, changex] = useState([0]);
     const playerX = props.user_list[0];
     const playerO = props.user_list[1];
-    const leaderboard = props.lead;
+    const [leaderboard, changeBoard] = useState(props.lead);
     
     function onClickDiv(index){
         const newList = [...myList];
@@ -86,16 +86,22 @@ export function Board(props)
         for (let i = 0; i < lines.length; i++) {
             const [a, b, c] = lines[i];
             if (myList[a] && myList[a] === myList[b] && myList[a] === myList[c]) {
-              if(myList[a] == 'X')
-              {
-                  //
-                  leaderboard[playerX] += 10;
-              }
-              else if (myList[a] == 'O')
-              {
-                  //
-                  leaderboard[playerO] += 10;
-              }
+            //   if(myList[a] == 'X')
+            //   {
+            //         const newBoard = {...leaderboard};
+            //         newBoard[playerX] += 1;
+            //         newBoard[playerO] -= 1;
+            //         changeBoard(newBoard);
+            //         socket.emit('leaderboard', {board: newBoard});
+            //   }
+            //   else if (myList[a] == 'O')
+            //   {
+            //         const newBoard = {...leaderboard};
+            //         newBoard[playerX] -= 1;
+            //         newBoard[playerO] += 1;
+            //         changeBoard(newBoard);
+            //         socket.emit('leaderboard', {board: newBoard});
+            //   }
               return myList[a] + " has won the game";
             }
         }

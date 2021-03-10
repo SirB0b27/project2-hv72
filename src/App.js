@@ -12,7 +12,6 @@ function App() {
   const [name, changeName] = useState('');
   const [list, changeList] = useState([]);
   var [leaderboard, changeBoard] = useState({"users":[], "scores":[]});
-  leaderboard = leaderboard ?? {};
   function login()
   {
     if(usernameRef != '')
@@ -31,15 +30,14 @@ function App() {
       changeList(tempList);
       socket.emit('login_info', {userList: tempList});
       
-      const newBoard = {...leaderboard};
-      // console.log("newBoard" + newBoard);  
-      if(!(username in newBoard))
+      const users = [...leaderboard["users"]];
+      const scores = [...leaderboard["scores"]];
+      if(!(username in users))
       {
-        console.log(username);
-        newBoard[username] = 100;
+        users.push(username);
+        scores.push(100);
       }
-      changeBoard(newBoard);
-      socket.emit('leaderboard', {board: newBoard});
+      socket.emit('leaderboard', {people: users, points: scores});
       
       // document.getElementById("login").style.display = "none";
       document.getElementById("boardy").style.display = "inline";
@@ -55,8 +53,8 @@ function App() {
     
     socket.on("leaderboard", (data) =>{
       console.log("leaderboard info recieved");
-      console.log(data["board"]);
-      changeBoard(prevList => data["board"]);
+      console.log(data);
+      // changeBoard(prevList => data["board"]);
     })
     
   }, []);
