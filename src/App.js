@@ -11,7 +11,7 @@ function App() {
   const usernameRef = useRef('');
   const [name, changeName] = useState('');
   const [list, changeList] = useState([]);
-  var [leaderboard, changeBoard] = useState({"users":[], "scores":[]});
+  var [leaderboard, changeLeaderboard] = useState({"users":[], "scores":[]});
   function login()
   {
     if(usernameRef != '')
@@ -30,14 +30,17 @@ function App() {
       changeList(tempList);
       socket.emit('login_info', {userList: tempList});
       
-      const users = [...leaderboard["users"]];
-      const scores = [...leaderboard["scores"]];
+      const users = leaderboard["users"];
+      console.log(users);
+      const scores = leaderboard["scores"];
+      console.log(scores);
       if(!(username in users))
       {
         users.push(username);
         scores.push(100);
       }
-      socket.emit('leaderboard', {people: users, points: scores});
+      changeLeaderboard({"users":users, "scores":scores});
+      socket.emit('leaderboard', {"people": users, "points": scores});
       
       // document.getElementById("login").style.display = "none";
       document.getElementById("boardy").style.display = "inline";
@@ -54,7 +57,7 @@ function App() {
     socket.on("leaderboard", (data) =>{
       console.log("leaderboard info recieved");
       console.log(data);
-      // changeBoard(prevList => data["board"]);
+      changeLeaderboard({"users":data["users"], "scores":data["scores"]});
     })
     
   }, []);
@@ -69,13 +72,17 @@ function App() {
       </div>
       <br/>
       <div class="boardy" id="boardy" style={{display:"none"}}>
-        <Board user_list={list} name={name} lead={leaderboard}/>
-      </div>
-      <div>
-      {Object.keys(leaderboard).map(key => <h2 key={key}>{key}&emsp;{leaderboard[key]}</h2>)}
+        <Board user_list={list} name={name}/>
       </div>
     </div>
   );
 }
 
 export default App;
+
+
+
+
+      // <div>
+      // {Object.keys(leaderboard).map(key => <h2 key={key}>{key}&emsp;{leaderboard[key]}</h2>)}
+      // </div>

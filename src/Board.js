@@ -11,7 +11,7 @@ export function Board(props)
     const [isx, changex] = useState([0]);
     const playerX = props.user_list[0];
     const playerO = props.user_list[1];
-    const [leaderboard, changeBoard] = useState(props.lead);
+    // const [leaderboard, changeBoard] = useState(props.lead);
     
     function onClickDiv(index){
         const newList = [...myList];
@@ -157,7 +157,7 @@ export function Board(props)
             </div>
             <br />
             <h1>{ wincon() ? wincon() : ''}</h1>
-            <h1>{ wincon() ? <button type="button" onClick={() => restart()}>Restart me bitch</button> : ''}</h1>
+            <h1>{ wincon() ? <button type="button" onClick={() => restart()}>Restart</button> : ''}</h1>
         </div>
     )
 }

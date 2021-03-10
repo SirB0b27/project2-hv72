@@ -61,15 +61,15 @@ def on_loginInfo(data):
 @socketio.on("leaderboard")
 def on_leaderboard(data):
     print(data)
-    
+    '''
     # update db here
-    # for person in data["board"]:
-    #     print(str(person) + "\t" + str(data["board"][person]))
-        # persons = models.Person(userName=person, userScore=data["board"][person])
-        # db.session.add(persons)
-        # db.session.commit()
-    
-    # socketio.emit("leaderboard", data, broadcast=True, include_self=False)
+    for person in data["board"]:
+        print(str(person) + "\t" + str(data["board"][person]))
+        persons = models.Person(userName=person, userScore=data["board"][person])
+        db.session.add(persons)
+        db.session.commit()
+    '''
+    socketio.emit("leaderboard", data, broadcast=True, include_self=False)
     
 
 # When a client emits the event 'chat' to the server, this function is run
