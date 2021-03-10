@@ -11,6 +11,7 @@ function App() {
   const usernameRef = useRef('');
   const [name, changeName] = useState('');
   const [list, changeList] = useState([]);
+  const [leaderboard, changeLead] = useState({});
   
   function login()
   {
@@ -22,8 +23,15 @@ function App() {
       const tempList = [...list];
       tempList.push(username);
       changeList(tempList);
-      
       socket.emit('login_info', {userList: tempList});
+      
+      const tempDict = {...leaderboard}
+      if(!(username in tempDict))
+      {
+        tempDict[username] = 100
+        changeLead(tempDict)
+        socket.emit("add_user", username)
+      }
       
       // document.getElementById("login").style.display = "none";
       document.getElementById("boardy").style.display = "inline";
@@ -36,6 +44,12 @@ function App() {
       console.log(data['userList']);
       changeList(prevList => data['userList']);
     })
+    
+    socket.on("from_db", (data) => {
+      console.log(data);
+      changeLead(data);
+    })
+    
   }, []);
   
   return (
@@ -49,6 +63,9 @@ function App() {
       <br/>
       <div class="boardy" id="boardy" style={{display:"none"}}>
         <Board user_list={list} name={name}/>
+      </div>
+      <div>
+      {Object.keys(leaderboard).map(key => <h2 key={key}>{key}&emsp;{leaderboard[key]}</h2>)}
       </div>
     </div>
   );
