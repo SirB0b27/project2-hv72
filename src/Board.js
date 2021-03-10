@@ -11,6 +11,7 @@ export function Board(props)
     const [isx, changex] = useState([0]);
     const playerX = props.user_list[0];
     const playerO = props.user_list[1];
+    var leaderupdate = false;
     
     function onClickDiv(index){
         const newList = [...myList];
@@ -85,7 +86,17 @@ export function Board(props)
         for (let i = 0; i < lines.length; i++) {
             const [a, b, c] = lines[i];
             if (myList[a] && myList[a] === myList[b] && myList[a] === myList[c]) {
-              return myList[a] + " has won the game";
+                if(myList[a] == "X")
+                {
+                    socket.emit("on_win", [playerX, playerO]);
+                    leaderupdate = true;
+                }
+                else if(myList[a] == "O")
+                {
+                    socket.emit("on_win", [playerO, playerX]);
+                    leaderupdate = true;
+                }
+                return myList[a] + " has won the game";
             }
         }
         return null;
@@ -99,6 +110,7 @@ export function Board(props)
             changex([0])
             socket.emit("tiktaktoe", {arr: newList, xory: [0]});
             changeList(prevList => [...newList]);
+            leaderupdate = false;
         }
     }
     

@@ -67,6 +67,16 @@ def add_user_to_db(data):
     on_connect()
     print(data)
 
+@socketio.on("on_win")
+def update_winner(data):
+    winner = models.Person.query.filter_by(username=data[0]).first()
+    winner.userscore = winner.userscore + 1
+    loser = models.Person.query.filter_by(username=data[1]).first()
+    loser.userscore = loser.userscore - 1
+    db.session.commit()
+    on_connect()
+    print(data)
+
 # When a client emits the event 'chat' to the server, this function is run
 # 'chat' is a custom event name that we just decided
 @socketio.on('chat')
