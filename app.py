@@ -36,7 +36,7 @@ def index(filename):
 # When a client connects from this Socket connection, this function is run
 @socketio.on('connect')
 def on_connect():
-    everything = models.Person.query.all()
+    everything = models.Person.query.order_by(models.Person.userscore.desc())
     print(everything)
     tempDict = {}
     for person in everything:
@@ -69,9 +69,9 @@ def add_user_to_db(data):
 
 @socketio.on("on_win")
 def update_winner(data):
-    winner = models.Person.query.filter_by(username=data[0]).first()
+    winner = db.session.query(models.Person).filter_by(username=data[0]).first()
     winner.userscore = winner.userscore + 1
-    loser = models.Person.query.filter_by(username=data[1]).first()
+    loser = db.session.query(models.Person).filter_by(username=data[1]).first()
     loser.userscore = loser.userscore - 1
     db.session.commit()
     on_connect()
