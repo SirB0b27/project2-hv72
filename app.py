@@ -19,7 +19,6 @@ db.create_all()
 # IMPORTANT: This must be AFTER creating db variable to prevent
 # circular import issues
 # from models import Person
-
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 socketio = SocketIO(
     app,
@@ -27,6 +26,9 @@ socketio = SocketIO(
     json=json,
     manage_session=False
 )
+
+# global variable to keep track of how many times we update the database
+counter = 0
 
 @app.route('/', defaults={"filename": "index.html"})
 @app.route('/<path:filename>')
@@ -36,7 +38,7 @@ def index(filename):
 # When a client connects from this Socket connection, this function is run
 @socketio.on('connect')
 def on_connect():
-    everything = models.Person.query.order_by(models.Person.userscore.desc())
+    everything = db.session.query(models.Person).all()
     print(everything)
     tempDict = {}
     for person in everything:
@@ -52,6 +54,9 @@ def on_disconnect():
 
 @socketio.on("tiktaktoe")
 def on_tictak(data):
+    global counter
+    if(data["arr"] == ['', '', '', '', '', '', '', '','']):
+        counter = 0
     print(data)
     socketio.emit("tiktaktoe", data, broadcast=True, include_self=False)
 
@@ -69,12 +74,15 @@ def add_user_to_db(data):
 
 @socketio.on("on_win")
 def update_winner(data):
-    winner = db.session.query(models.Person).filter_by(username=data[0]).first()
-    winner.userscore = winner.userscore + 1
-    loser = db.session.query(models.Person).filter_by(username=data[1]).first()
-    loser.userscore = loser.userscore - 1
-    db.session.commit()
-    on_connect()
+    global counter
+    counter += 1
+    if counter == 1:
+        winner = db.session.query(models.Person).filter_by(username=data[0]).first()
+        winner.userscore = winner.userscore + 1
+        loser = db.session.query(models.Person).filter_by(username=data[1]).first()
+        loser.userscore = loser.userscore - 1
+        db.session.commit()
+        on_connect()
     print(data)
 
 # When a client emits the event 'chat' to the server, this function is run

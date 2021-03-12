@@ -12,6 +12,7 @@ function App() {
   const [name, changeName] = useState('');
   const [list, changeList] = useState([]);
   const [leaderboard, changeLead] = useState({});
+  var sortedLeader = {};
   
   function login()
   {
@@ -35,8 +36,16 @@ function App() {
       
       // document.getElementById("login").style.display = "none";
       document.getElementById("boardy").style.display = "inline";
+      // sortedLeader = Object.fromEntries(Object.entries(leaderboard).sort(([,a],[,b]) => a-b));
     }
   }
+  
+  //got this sorting from: https://stackoverflow.com/questions/1069666/sorting-object-property-by-values
+  const sortable = Object.fromEntries(
+      Object.entries(leaderboard).sort(([,a],[,b]) => b-a)
+  );
+  
+  console.log(sortable);
   
   useEffect( () => {
     socket.on("login_info", (data) => {
@@ -65,7 +74,7 @@ function App() {
         <Board user_list={list} name={name}/>
       </div>
       <div>
-      {Object.keys(leaderboard).map(key => <h2 key={key}>{key}&emsp;{leaderboard[key]}</h2>)}
+      {Object.keys(sortable).map(key => <h2 key={key}>{key}&emsp;{sortable[key]}</h2>)}
       </div>
     </div>
   );
