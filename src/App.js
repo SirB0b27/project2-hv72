@@ -12,7 +12,6 @@ function App() {
   const [name, changeName] = useState('');
   const [list, changeList] = useState([]);
   const [leaderboard, changeLead] = useState({});
-  var sortedLeader = {};
   
   function login()
   {
@@ -37,6 +36,18 @@ function App() {
       // document.getElementById("login").style.display = "none";
       document.getElementById("boardy").style.display = "inline";
       // sortedLeader = Object.fromEntries(Object.entries(leaderboard).sort(([,a],[,b]) => a-b));
+    }
+  }
+  
+  function show_leaderboard()
+  {
+    if(document.getElementById("renderLeaderboard").style.display == "none")
+    {
+      document.getElementById("renderLeaderboard").style.display = "block";
+    }
+    else if(document.getElementById("renderLeaderboard").style.display == "block")
+    {
+      document.getElementById("renderLeaderboard").style.display = "none";
     }
   }
   
@@ -73,8 +84,9 @@ function App() {
       <div class="boardy" id="boardy" style={{display:"none"}}>
         <Board user_list={list} name={name}/>
       </div>
-      <div>
-      {Object.keys(sortable).map(key => <h2 key={key}>{key}&emsp;{sortable[key]}</h2>)}
+      <button id="leaderboardButton" class="leaderboardButton" onClick={() => show_leaderboard()}>Click to see leaderboard</button>
+      <div id="renderLeaderboard" class="renderLeaderboard" style={{display:"none"}}>
+        {Object.keys(sortable).map(key => <h2 key={key}>{key}&emsp;{sortable[key]}</h2>)}
       </div>
     </div>
   );
