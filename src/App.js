@@ -51,6 +51,11 @@ function App() {
     }
   }
   
+  function render_leaderboard()
+  {
+    return (<h1></h1>);
+  }
+  
   //got this sorting from: https://stackoverflow.com/questions/1069666/sorting-object-property-by-values
   const sortable = Object.fromEntries(
       Object.entries(leaderboard).sort(([,a],[,b]) => b-a)
@@ -72,13 +77,15 @@ function App() {
     
   }, []);
   
+  
+  //table information: https://www.w3schools.com/tags/tag_thead.asp
   return (
     <div class="overarching">
       <div id="login" style={{display:"inline"}}>
         <h3>Welcome to Tic-Tac-Toe</h3>
         <input type="text" ref={usernameRef} placeholder="Enter Username"/>
         <br/>
-        <button type="button" onClick={() => login()}>Log me in bitch</button>
+        <button type="button" onClick={() => login()}>Log in</button>
       </div>
       <br/>
       <div class="boardy" id="boardy" style={{display:"none"}}>
@@ -86,10 +93,21 @@ function App() {
       </div>
       <button id="leaderboardButton" class="leaderboardButton" onClick={() => show_leaderboard()}>Click to see leaderboard</button>
       <div id="renderLeaderboard" class="renderLeaderboard" style={{display:"none"}}>
-        {Object.keys(sortable).map(key => <h2 key={key}>{key}&emsp;{sortable[key]}</h2>)}
+        <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>User Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.keys(sortable).map(key => <tr><th>{key}</th><th>{sortable[key]}</th></tr>)}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 }
 
 export default App;
+
