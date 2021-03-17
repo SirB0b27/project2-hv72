@@ -101,7 +101,7 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            {Object.keys(sortable).map(key => <tr><th>{key}</th><th>{sortable[key]}</th></tr>)}
+            {Object.keys(sortable).map(key => <tr class={(key == usernameRef.current.value) ? "currentUser" : ""}><th>{key}</th><th>{sortable[key]}</th></tr>)}
           </tbody>
         </table>
       </div>
