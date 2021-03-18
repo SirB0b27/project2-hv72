@@ -51,11 +51,6 @@ function App() {
     }
   }
   
-  function render_leaderboard()
-  {
-    return (<h1></h1>);
-  }
-  
   //got this sorting from: https://stackoverflow.com/questions/1069666/sorting-object-property-by-values
   const sortable = Object.fromEntries(
       Object.entries(leaderboard).sort(([,a],[,b]) => b-a)
