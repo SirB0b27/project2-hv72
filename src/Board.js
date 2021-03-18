@@ -148,7 +148,7 @@ export function Board(props)
             </div>
             <br />
             <h1>{ wincon() ? wincon() : ''}</h1>
-            <h1>{ wincon() ? <button type="button" onClick={() => restart()}>Restart</button> : ''}</h1>
+            <h1>{ wincon() ? <button type="button" onClick={() => restart()}>Restart me bitch</button> : ''}</h1>
         </div>
     )
 }

@@ -72,15 +72,13 @@ function App() {
     
   }, []);
   
-  
-  //table information: https://www.w3schools.com/tags/tag_thead.asp
   return (
     <div class="overarching">
       <div id="login" style={{display:"inline"}}>
         <h3>Welcome to Tic-Tac-Toe</h3>
         <input type="text" ref={usernameRef} placeholder="Enter Username"/>
         <br/>
-        <button type="button" onClick={() => login()}>Log in</button>
+        <button type="button" onClick={() => login()}>Log me in bitch</button>
       </div>
       <br/>
       <div class="boardy" id="boardy" style={{display:"none"}}>
@@ -88,6 +86,7 @@ function App() {
       </div>
       <button id="leaderboardButton" class="leaderboardButton" onClick={() => show_leaderboard()}>Click to see leaderboard</button>
       <div id="renderLeaderboard" class="renderLeaderboard" style={{display:"none"}}>
+<<<<<<< HEAD
         <table>
           <thead>
             <tr>
@@ -99,10 +98,12 @@ function App() {
             {Object.keys(sortable).map(key => <tr class={(key == usernameRef.current.value) ? "currentUser" : ""}><th>{key}</th><th>{sortable[key]}</th></tr>)}
           </tbody>
         </table>
+=======
+        {Object.keys(sortable).map(key => <h2 key={key}>{key}&emsp;{sortable[key]}</h2>)}
+>>>>>>> parent of c39d2af (changed leaderboard to used html table tag and fixed some buttom labels)
       </div>
     </div>
   );
 }
 
 export default App;
-
