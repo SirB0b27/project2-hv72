@@ -86,7 +86,6 @@ function App() {
       </div>
       <button id="leaderboardButton" class="leaderboardButton" onClick={() => show_leaderboard()}>Click to see leaderboard</button>
       <div id="renderLeaderboard" class="renderLeaderboard" style={{display:"none"}}>
-<<<<<<< HEAD
         <table>
           <thead>
             <tr>
@@ -98,9 +97,7 @@ function App() {
             {Object.keys(sortable).map(key => <tr class={(key == usernameRef.current.value) ? "currentUser" : ""}><th>{key}</th><th>{sortable[key]}</th></tr>)}
           </tbody>
         </table>
-=======
         {Object.keys(sortable).map(key => <h2 key={key}>{key}&emsp;{sortable[key]}</h2>)}
->>>>>>> parent of c39d2af (changed leaderboard to used html table tag and fixed some buttom labels)
       </div>
     </div>
   );
