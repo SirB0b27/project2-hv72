@@ -15,7 +15,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 import models
-db.create_all()
+# db.create_all()
 # IMPORTANT: This must be AFTER creating db variable to prevent
 # circular import issues
 # from models import Person

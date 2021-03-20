@@ -31,12 +31,12 @@
 
 ## Deploy to Heroku
 1. Login and fill creds: `heroku login -i`
-2. git remote rm heroku (get rid of the existing remote repo from M1)
-3. heroku create (create a new Heroku app for M2)
+2. `git remote rm heroku` (get rid of the existing remote repo from M1)
+3. `heroku create` (create a new Heroku app for M2)
 4. Add nodejs buildpack: `heroku buildpacks:add --index 1 heroku/nodejs`
-5. heroku addons:create heroku-postgresql:hobby-dev (add a DB)
-6. heroku config (check your env vars)
-7. export DATABASE_URL='set the URL what we got from heroku config'
+5. `heroku addons:create heroku-postgresql:hobby-dev` (add a DB)
+6. `heroku config` (check your env vars)
+7. `export DATABASE_URL='set the URL what we got from heroku config'`
 8. Push to Heroku: `git push -f heroku milestone_2:main`
 
 
