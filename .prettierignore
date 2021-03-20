@@ -1,0 +1,15 @@
+# Ignore artifacts:
+README.md
+
+# Ignore all HTML files:
+*.html
+
+# Ignore all Python files:
+*.py
+
+#ignore all JSON files:
+*.json
+
+# Ignore all CSS files:
+*.css
+
