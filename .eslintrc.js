@@ -7,6 +7,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:react/recommended',
     'airbnb',
+    'airbnb/hooks',
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -23,5 +24,5 @@ module.exports = {
     "react/no-array-index-key": "off",
     "react-hooks/exhaustive-deps": "off"
   },
-  ignorePatterns: ['src/index.js', 'src/reportWebVitals.js', 'setupTests.js'],
+  ignorePatterns: ['src/index.js', 'src/reportWebVitals.js', 'src/setupTests.js', 'src/App.js', 'Board.js', 'src/Box.js'],
 };

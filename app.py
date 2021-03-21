@@ -20,7 +20,7 @@ APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 DB = SQLAlchemy(APP)
 import models
-# db.create_all()
+DB.create_all()
 # IMPORTANT: This must be AFTER creating db variable to prevent
 # circular import issues
 # from models import Person
@@ -105,10 +105,16 @@ def add_user_to_db(data):
     '''
     socket function to add the logged in user to the database
     '''
+    everything = write_to_db(data)
+    temp_dict = add_to_dict(everything)
+    SOCKETIO.emit("from_db", temp_dict, broadcast=True, include_self=True)
+    print(data)
+
+def write_to_db(data):
     DB.session.add(models.Person(username=data, userscore=100))
     DB.session.commit()
-    on_connect()
-    print(data)
+    everything = DB.session.query(models.Person).all()
+    return everything
 
 
 @SOCKETIO.on("on_win")
