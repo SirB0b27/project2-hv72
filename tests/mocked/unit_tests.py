@@ -122,6 +122,15 @@ class update_score_test(unittest.TestCase):
             
             
         ]
+        
+    def mocked_db_query(self):
+        print("querrying")
+    
+    def test_success(self):
+        for test in self.success_test_params:
+            with patch('app.DB.session.query', self.mocked_db_query):
+                print(test)
+    
     def test(self):
         print("hello world")
 
