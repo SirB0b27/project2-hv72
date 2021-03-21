@@ -38,7 +38,7 @@ def index(filename):
 # When a client connects from this Socket connection, this function is run
 @socketio.on('connect')
 def on_connect():
-    everything = db.session.query(models.Person).all()
+    everything = models.Person.query.all()
     print(everything)
     tempDict = {}
     for person in everything:
