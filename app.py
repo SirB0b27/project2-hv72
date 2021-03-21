@@ -50,14 +50,19 @@ def on_connect():
     socket function to execute upon connection
     '''
     everything = DB.session.query(models.Person).all()
-    print(everything)
+    # print(everything)
+    temp_dict = add_to_dict(everything)
+    SOCKETIO.emit("from_db", temp_dict, broadcast=True, include_self=True)
+    # print('User connected!')
+
+def add_to_dict(everything):
+    '''
+    adding to a temporary dictionary and returing that dictionary
+    '''
     temp_dict = {}
     for person in everything:
-        print(str(person.username) + "\tScore: " + str(person.userscore))
         temp_dict[person.username] = person.userscore
-    SOCKETIO.emit("from_db", temp_dict, broadcast=True, include_self=True)
-    print('User connected!')
-
+    return temp_dict
 
 # When a client disconnects from this Socket connection, this function is run
 @SOCKETIO.on('disconnect')
@@ -74,11 +79,17 @@ def on_tictak(data):
     socket function to transer board data across multiple instances
     '''
     global COUNTER
-    if (data["arr"] == ['', '', '', '', '', '', '', '', '']):
-        COUNTER = 0
+    COUNTER = reset_counter(data, COUNTER)[0]
     print(data)
     SOCKETIO.emit("tiktaktoe", data, broadcast=True, include_self=False)
 
+def reset_counter(data, count):
+    '''
+    reset the counter if the board is empty
+    '''
+    if (data["arr"] == ['', '', '', '', '', '', '', '', '']):
+        count = 0
+    return [count, data["arr"]];
 
 @SOCKETIO.on("login_info")
 def on_login_info(data):
