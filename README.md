@@ -18,6 +18,9 @@
 12. `npm install --save-dev --save-exact prettier`
 13. `npm install --save-dev eslint-config-prettier`
 14. `pip install yapf`
+15. `pip install pylint`
+16. `npx install-peerdeps --dev eslint-config-airbnb`
+17. `npm install --save prop-types`
 
 ## Setup
 
