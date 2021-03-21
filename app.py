@@ -113,7 +113,7 @@ def add_user_to_db(data):
 def write_to_db(data):
     DB.session.add(models.Person(username=data, userscore=100))
     DB.session.commit()
-    everything = DB.session.query(models.Person).all()
+    everything = models.Person.query.all()
     return everything
 
 
@@ -125,15 +125,22 @@ def update_winner(data):
     global COUNTER
     COUNTER += 1
     if COUNTER == 1:
-        winner = DB.session.query(
-            models.Person).filter_by(username=data[0]).first()
-        winner.userscore = winner.userscore + 1
-        loser = DB.session.query(
-            models.Person).filter_by(username=data[1]).first()
-        loser.userscore = loser.userscore - 1
-        DB.session.commit()
-        on_connect()
+        everything = update_score(data)
+        # print(everything)
+        temp_dict = add_to_dict(everything)
+        SOCKETIO.emit("from_db", temp_dict, broadcast=True, include_self=True)
     print(data)
+
+def update_score(data):
+    winner = DB.session.query(
+        models.Person).filter_by(username=data[0]).first()
+    winner.userscore = winner.userscore + 1
+    loser = DB.session.query(
+        models.Person).filter_by(username=data[1]).first()
+    loser.userscore = loser.userscore - 1
+    DB.session.commit()
+    everything = DB.session.query(models.Person).all()
+    return everything
 
 
 # When a client emits the event 'chat' to the server, this function is run
