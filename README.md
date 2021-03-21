@@ -21,6 +21,7 @@
 15. `pip install pylint`
 16. `npx install-peerdeps --dev eslint-config-airbnb`
 17. `npm install --save prop-types`
+18. `npm install --save-dev @testing-library/react`
 
 ## Setup
 
