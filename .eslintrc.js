@@ -20,15 +20,16 @@ module.exports = {
     'react',
   ],
   rules: {
-    "react/jsx-filename-extension": "off",
-    "react/no-array-index-key": "off",
-    "react-hooks/exhaustive-deps": "off"
+    'react/jsx-filename-extension': 'off',
+    'react/no-array-index-key': 'off',
+    'react-hooks/exhaustive-deps': 'off',
   },
   ignorePatterns: [
-    'src/index.js', 
-    'src/reportWebVitals.js', 
-    'src/setupTests.js', 
-    'src/App.js', 
+    'src/index.js',
+    'src/reportWebVitals.js',
+    'src/setupTests.js',
+    'src/App.js',
     'src/Board.js',
+    'src/App.test.js',
   ],
 };

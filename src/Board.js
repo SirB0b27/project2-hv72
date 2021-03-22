@@ -1,70 +1,33 @@
-import { Box } from './Box.js';
-import { useState, useRef, useEffect } from 'react';
+import { useState, React, useEffect } from 'react';
 import './Board.css';
 import io from 'socket.io-client';
+import { PropTypes } from 'prop-types';
+import { Box } from './Box';
 
 const socket = io();
 
 export function Board(props) {
   const [myList, changeList] = useState(['', '', '', '', '', '', '', '', '']);
   const [isx, changex] = useState([0]);
+  // const { userList } = props;
+  // const { playerXProp } = props.user_list;
+  // const { playerOProp } = props.user_list;
   const playerX = props.user_list[0];
   const playerO = props.user_list[1];
 
-  function onClickDiv(index) {
-    const newList = [...myList];
-    let countNonNull = 0;
-    for (let i = 0; i <= 8; i++) {
-      if (myList[i] == '') {
-        continue;
-      } else {
-        countNonNull++;
-      }
-    }
-    console.log(`non nulls: ${countNonNull}`);
-
-    if (newList[index] == '') {
-      if (
-        isx[0] == 0
-        && playerX == props.name
-        && countNonNull % 2 == 0
-        && !wincon()
-      ) {
-        newList[index] = 'X';
-        changex([1]);
-        socket.emit('tiktaktoe', { arr: newList, xory: [1] });
-        changeList((prevList) => [...newList]);
-        console.log(newList);
-        // return;
-      } else if (
-        isx[0] == 1
-        && playerO == props.name
-        && countNonNull % 2 == 1
-        && !wincon()
-      ) {
-        newList[index] = 'O';
-        changex([0]);
-        socket.emit('tiktaktoe', { arr: newList, xory: [0] });
-        changeList((prevList) => [...newList]);
-        console.log(newList);
-        // return;
-      }
-    } else {
-      console.log("Can't Click Here");
-    }
-  }
+  const { name } = props;
 
   // got this from https://reactjs.org/tutorial/tutorial.html
   function wincon() {
     let countNonNull = 0;
-    for (let i = 0; i <= 8; i++) {
-      if (myList[i] == '') {
-        continue;
+    for (let i = 0; i <= 8; i += 1) {
+      if (myList[i] === '') {
+        // continue;
       } else {
-        countNonNull++;
+        countNonNull += 1;
       }
     }
-    if (countNonNull == 9) {
+    if (countNonNull === 9) {
       return 'No winner';
     }
     const lines = [
@@ -77,12 +40,12 @@ export function Board(props) {
       [0, 4, 8],
       [2, 4, 6],
     ];
-    for (let i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i += 1) {
       const [a, b, c] = lines[i];
       if (myList[a] && myList[a] === myList[b] && myList[a] === myList[c]) {
-        if (myList[a] == 'X' && props.name == playerX) {
+        if (myList[a] === 'X' && name === playerX) {
           socket.emit('on_win', [playerX, playerO]);
-        } else if (myList[a] == 'O' && props.name == playerO) {
+        } else if (myList[a] === 'O' && name === playerO) {
           socket.emit('on_win', [playerO, playerX]);
         }
         return `${myList[a]} has won the game`;
@@ -91,29 +54,72 @@ export function Board(props) {
     return null;
   }
 
+  function onClickDiv(index) {
+    const newList = [...myList];
+    let countNonNull = 0;
+    for (let i = 0; i <= 8; i += 1) {
+      if (myList[i] === '') {
+        // continue;
+      } else {
+        countNonNull += 1;
+      }
+    }
+    // console.log(`non nulls: ${countNonNull}`);
+
+    if (newList[index] === '') {
+      if (
+        isx[0] === 0
+        && playerX === name
+        && countNonNull % 2 === 0
+        && !wincon()
+      ) {
+        newList[index] = 'X';
+        changex([1]);
+        socket.emit('tiktaktoe', { arr: newList, xory: [1] });
+        changeList([...newList]);
+        // console.log(newList);
+        // return;
+      } else if (
+        isx[0] === 1
+        && playerO === name
+        && countNonNull % 2 === 1
+        && !wincon()
+      ) {
+        newList[index] = 'O';
+        changex([0]);
+        socket.emit('tiktaktoe', { arr: newList, xory: [0] });
+        changeList([...newList]);
+        // console.log(newList);
+        // return;
+      }
+    } else {
+      // console.log("Can't Click Here");
+    }
+  }
+
   function restart() {
-    if (playerX == props.name || playerO == props.name) {
+    if (playerX === name || playerO === name) {
       const newList = ['', '', '', '', '', '', '', '', ''];
       changex([0]);
       socket.emit('tiktaktoe', { arr: newList, xory: [0] });
-      changeList((prevList) => [...newList]);
+      changeList([...newList]);
     }
   }
 
   useEffect(() => {
     socket.on('tiktaktoe', (data) => {
-      console.log('Tiktaktoe event received');
-      console.log(data.arr);
-      console.log(data.xory);
-      changeList((prevList) => [...data.arr]);
-      changex((prevList) => data.xory);
+      // console.log('Tiktaktoe event received');
+      // console.log(data.arr);
+      // console.log(data.xory);
+      changeList([...data.arr]);
+      changex(data.xory);
     });
   }, []);
 
   return (
     <div>
       <h4 style={{ display: 'inline' }}>Current user:</h4>
-      <p style={{ display: 'inline' }}>{props.name}</p>
+      <p style={{ display: 'inline' }}>{name}</p>
       <br />
       <h4 style={{ display: 'inline' }}>Player X:</h4>
       <p style={{ display: 'inline' }}>
@@ -128,18 +134,19 @@ export function Board(props) {
       </p>
       <br />
       <h4 style={{ display: 'inline' }}>Spectators:</h4>
-      {props.user_list.map((item, index, list) => {
-        if (index != 0 && index != 1) {
+      {props.user_list.map((item, index) => {
+        if (index !== 0 && index !== 1) {
           return (
             <div>
               <p style={{ display: 'inline' }}>
-&emsp;-
+                &emsp;-
                 {item}
               </p>
               <br />
             </div>
           );
         }
+        return <div />;
       })}
       <div className="board">
         <Box
@@ -211,3 +218,11 @@ export function Board(props) {
     </div>
   );
 }
+
+Board.propTypes = {
+  name: PropTypes.string.isRequired,
+  userList: PropTypes.arrayOf(PropTypes.string).isRequired,
+  user_list: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
+export default Board;
