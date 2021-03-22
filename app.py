@@ -117,6 +117,9 @@ def add_user_to_db(data):
 
 
 def write_to_db(data):
+    '''
+    write info to db
+    '''
     DB.session.add(models.Person(username=data, userscore=100))
     DB.session.commit()
     everything = models.Person.query.all()
