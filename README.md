@@ -51,12 +51,13 @@
 
 ## Heroku Deployed Website:
 
-https://enigmatic-ocean-14230.herokuapp.com/
+https://sleepy-sea-33848.herokuapp.com/
 
 ## Known Problem(s) / Future Ideas
 
 1. One future idea that I plan on implementing is using images instead of Xs and Os to make my Tic-Tac-Toe more unique compared to other Tic-Tac-Toe games out there. For this I plan on looking for two images of characters who are considered enemies such as: Aang and Zuko(I know that Zuko isnt his final enemy, but Zuko is more popular, and thus the better option compared to Firelord Ozai)
 2. Another future idea is to add a chat box for players to interact, this should be as easy as creating a state that contians the username and the message in a dictionary, and just use html to render this dictionary out. I am not using a database for this becase this chat isn't required to be consistent accross different games. So if player 1 and player 2 are talking in the current game, and in the future players 3 and 4 are talking, there is no reason for them to see chat history between players 1 and 2. This could be a future future plan of having individual chat channels for each players, but with the time constraint, this might not be possible.
+3. Known issue of cylic import error with pylint, tried the solution pinned in Slack, didn't work, spent some time researching, couldn't find solution, already well over due time, so I am giving up on it for the submission
 
 ## Technical Issues and How I Solved Them (too many to remember them all)
 
@@ -66,3 +67,4 @@ https://enigmatic-ocean-14230.herokuapp.com/
    - https://www.kite.com/python/answers/how-to-order-by-desc-in-sqlalchemy-in-python
    - https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
    - https://stackoverflow.com/questions/1069666/sorting-object-property-by-values
+3. During jest testing, there was a big issue with getting the .not.toBeInTheDocument, me and Abishek were working on this part together trying to figure out what that wasn't working even though it worked in the professors demo video. We managed to find .toHaveStyle, which made things so much easier, in a sense. We still couldn't get it working correctly, when I decided to take a guess that the document element we got was only refering to the tag with the displayed tag. So I added an id to the tag and style to it, and tested to see if that works, and it did, which made me happy, and I managed to do the other two tests much faster.
