@@ -135,7 +135,7 @@ export function Board(props)
                     return <div><p style={{display:"inline"}}>&emsp;- {item}</p><br /></div>
                 }
             })}
-            <div class="board">
+            <div className="board">
                 <Box func={() => {onClickDiv(0)}} val={myList[0]}/>
                 <Box func={() => {onClickDiv(1)}} val={myList[1]}/>
                 <Box func={() => {onClickDiv(2)}} val={myList[2]}/>
