@@ -24,5 +24,12 @@ module.exports = {
     "react/no-array-index-key": "off",
     "react-hooks/exhaustive-deps": "off"
   },
-  ignorePatterns: ['src/index.js', 'src/reportWebVitals.js', 'src/setupTests.js', 'src/App.js', 'src/Board.js', 'src/Box.js'],
+  ignorePatterns: [
+    'src/index.js', 
+    'src/reportWebVitals.js', 
+    'src/setupTests.js', 
+    'src/App.js', 
+    'src/Board.js', 
+    'src/Box.js'
+  ],
 };

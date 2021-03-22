@@ -14,7 +14,8 @@ function App() {
   const [leaderboard, changeLead] = useState({});
 
   function login() {
-    if (usernameRef != "") {
+    // if (document.getElementById("currentUsername").value != '')
+    if (usernameRef != '') {
       const username = usernameRef.current.value;
       // console.log(username);
       changeName(username);
@@ -71,7 +72,7 @@ function App() {
     <div class="overarching">
       <div id="login" style={{ display: "inline" }}>
         <h3>Welcome to Tic-Tac-Toe</h3>
-        <input type="text" ref={usernameRef} placeholder="Enter Username" />
+        <input type="text" ref={usernameRef} id="currentUsername" placeholder="Enter Username" />
         <br />
         <button type="button" onClick={() => login()}>
           Log in
