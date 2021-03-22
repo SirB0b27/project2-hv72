@@ -1,50 +1,50 @@
-import { Box } from "./Box.js";
-import { useState, useRef, useEffect } from "react";
-import "./Board.css";
-import io from "socket.io-client";
+import { Box } from './Box.js';
+import { useState, useRef, useEffect } from 'react';
+import './Board.css';
+import io from 'socket.io-client';
 
 const socket = io();
 
 export function Board(props) {
-  const [myList, changeList] = useState(["", "", "", "", "", "", "", "", ""]);
+  const [myList, changeList] = useState(['', '', '', '', '', '', '', '', '']);
   const [isx, changex] = useState([0]);
   const playerX = props.user_list[0];
   const playerO = props.user_list[1];
 
   function onClickDiv(index) {
     const newList = [...myList];
-    var countNonNull = 0;
-    for (var i = 0; i <= 8; i++) {
-      if (myList[i] == "") {
+    let countNonNull = 0;
+    for (let i = 0; i <= 8; i++) {
+      if (myList[i] == '') {
         continue;
       } else {
         countNonNull++;
       }
     }
-    console.log("non nulls: " + countNonNull);
+    console.log(`non nulls: ${countNonNull}`);
 
-    if (newList[index] == "") {
+    if (newList[index] == '') {
       if (
-        isx[0] == 0 &&
-        playerX == props.name &&
-        countNonNull % 2 == 0 &&
-        !wincon()
+        isx[0] == 0
+        && playerX == props.name
+        && countNonNull % 2 == 0
+        && !wincon()
       ) {
-        newList[index] = "X";
+        newList[index] = 'X';
         changex([1]);
-        socket.emit("tiktaktoe", { arr: newList, xory: [1] });
+        socket.emit('tiktaktoe', { arr: newList, xory: [1] });
         changeList((prevList) => [...newList]);
         console.log(newList);
         // return;
       } else if (
-        isx[0] == 1 &&
-        playerO == props.name &&
-        countNonNull % 2 == 1 &&
-        !wincon()
+        isx[0] == 1
+        && playerO == props.name
+        && countNonNull % 2 == 1
+        && !wincon()
       ) {
-        newList[index] = "O";
+        newList[index] = 'O';
         changex([0]);
-        socket.emit("tiktaktoe", { arr: newList, xory: [0] });
+        socket.emit('tiktaktoe', { arr: newList, xory: [0] });
         changeList((prevList) => [...newList]);
         console.log(newList);
         // return;
@@ -56,16 +56,16 @@ export function Board(props) {
 
   // got this from https://reactjs.org/tutorial/tutorial.html
   function wincon() {
-    var countNonNull = 0;
-    for (var i = 0; i <= 8; i++) {
-      if (myList[i] == "") {
+    let countNonNull = 0;
+    for (let i = 0; i <= 8; i++) {
+      if (myList[i] == '') {
         continue;
       } else {
         countNonNull++;
       }
     }
     if (countNonNull == 9) {
-      return "No winner";
+      return 'No winner';
     }
     const lines = [
       [0, 1, 2],
@@ -80,12 +80,12 @@ export function Board(props) {
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
       if (myList[a] && myList[a] === myList[b] && myList[a] === myList[c]) {
-        if (myList[a] == "X" && props.name == playerX) {
-          socket.emit("on_win", [playerX, playerO]);
-        } else if (myList[a] == "O" && props.name == playerO) {
-          socket.emit("on_win", [playerO, playerX]);
+        if (myList[a] == 'X' && props.name == playerX) {
+          socket.emit('on_win', [playerX, playerO]);
+        } else if (myList[a] == 'O' && props.name == playerO) {
+          socket.emit('on_win', [playerO, playerX]);
         }
-        return myList[a] + " has won the game";
+        return `${myList[a]} has won the game`;
       }
     }
     return null;
@@ -93,46 +93,55 @@ export function Board(props) {
 
   function restart() {
     if (playerX == props.name || playerO == props.name) {
-      const newList = ["", "", "", "", "", "", "", "", ""];
+      const newList = ['', '', '', '', '', '', '', '', ''];
       changex([0]);
-      socket.emit("tiktaktoe", { arr: newList, xory: [0] });
+      socket.emit('tiktaktoe', { arr: newList, xory: [0] });
       changeList((prevList) => [...newList]);
     }
   }
 
   useEffect(() => {
-    socket.on("tiktaktoe", (data) => {
-      console.log("Tiktaktoe event received");
-      console.log(data["arr"]);
-      console.log(data["xory"]);
-      changeList((prevList) => [...data["arr"]]);
-      changex((prevList) => data["xory"]);
+    socket.on('tiktaktoe', (data) => {
+      console.log('Tiktaktoe event received');
+      console.log(data.arr);
+      console.log(data.xory);
+      changeList((prevList) => [...data.arr]);
+      changex((prevList) => data.xory);
     });
   }, []);
 
   return (
     <div>
-      <h4 style={{ display: "inline" }}>Current user:</h4>
-      <p style={{ display: "inline" }}>{props.name}</p>
+      <h4 style={{ display: 'inline' }}>Current user:</h4>
+      <p style={{ display: 'inline' }}>{props.name}</p>
       <br />
-      <h4 style={{ display: "inline" }}>Player X:</h4>
-      <p style={{ display: "inline" }}> {playerX}</p>
+      <h4 style={{ display: 'inline' }}>Player X:</h4>
+      <p style={{ display: 'inline' }}>
+        {' '}
+        {playerX}
+      </p>
       <br />
-      <h4 style={{ display: "inline" }}>Player O:</h4>
-      <p style={{ display: "inline" }}> {playerO}</p>
+      <h4 style={{ display: 'inline' }}>Player O:</h4>
+      <p style={{ display: 'inline' }}>
+        {' '}
+        {playerO}
+      </p>
       <br />
-      <h4 style={{ display: "inline" }}>Spectators:</h4>
-      {props.user_list.map(function (item, index, list) {
+      <h4 style={{ display: 'inline' }}>Spectators:</h4>
+      {props.user_list.map((item, index, list) => {
         if (index != 0 && index != 1) {
           return (
             <div>
-              <p style={{ display: "inline" }}>&emsp;- {item}</p>
+              <p style={{ display: 'inline' }}>
+&emsp;-
+                {item}
+              </p>
               <br />
             </div>
           );
         }
       })}
-      <div class="board">
+      <div className="board">
         <Box
           func={() => {
             onClickDiv(0);
@@ -189,14 +198,14 @@ export function Board(props) {
         />
       </div>
       <br />
-      <h1>{wincon() ? wincon() : ""}</h1>
+      <h1>{wincon() ? wincon() : ''}</h1>
       <h1>
         {wincon() ? (
           <button type="button" onClick={() => restart()}>
             Restart
           </button>
         ) : (
-          ""
+          ''
         )}
       </h1>
     </div>

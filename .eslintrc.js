@@ -29,7 +29,6 @@ module.exports = {
     'src/reportWebVitals.js', 
     'src/setupTests.js', 
     'src/App.js', 
-    'src/Board.js', 
-    'src/Box.js'
+    'src/Board.js',
   ],
 };
