@@ -2,6 +2,11 @@
 
 ### by Hemanth Velan
 
+
+## Heroku Deployed Website:
+
+https://sleepy-sea-33848.herokuapp.com/
+
 ## Requirements
 
 1. `pip install python-dotenv`
@@ -48,10 +53,6 @@
 6. `heroku config` (check your env vars)
 7. `export DATABASE_URL='set the URL what we got from heroku config'`
 8. Push to Heroku: `git push -f heroku milestone_2:main`
-
-## Heroku Deployed Website:
-
-https://sleepy-sea-33848.herokuapp.com/
 
 ## Known Problem(s) / Future Ideas
 
